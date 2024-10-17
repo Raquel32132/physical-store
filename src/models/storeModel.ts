@@ -1,4 +1,4 @@
-import { Address } from './Address';
+import { Address } from './addressModel';
 
 export interface Store {
   id: string;
