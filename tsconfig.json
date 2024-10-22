@@ -6,6 +6,6 @@
     "outDir": "./dist",
     "esModuleInterop": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "mongoConnection.ts", "server.ts"],
   "exclude": ["node_modules"]
 }
