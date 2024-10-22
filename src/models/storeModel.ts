@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { AddressProps } from './addressModel';
 
-interface StoreProps extends Document {
+export interface StoreProps extends Document {
   name: string;
   description?: string;
   phoneNumber: string;
