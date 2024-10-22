@@ -1,12 +1,10 @@
-import { MongoClient } from "mongodb";
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const url = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`;
-const dbName = process.env.MONGODB_DATABASE;
+dotenv.config({ path: './.env' });
 
-export const connectToMongo = async () => {
-  const client = new MongoClient(url);
-  await client.connect();
+const db = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_CLUSTER}/${process.env.MONGODB_DATABASE}?retryWrites=true&w=majority`;
 
-  console.log('Connected to MongoDB.');
-  return client.db(dbName);
-};
+mongoose.connect(db)
+  .then(() => console.log('Database connection successful!'))
+  .catch((err) => console.error('Database connection error:', err));
