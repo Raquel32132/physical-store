@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-interface AddressProps extends Document {
+export interface AddressProps extends Document {
   street: string;
   number: string;
   complement?: string;
@@ -14,7 +14,7 @@ interface AddressProps extends Document {
 const addressSchema: Schema = new Schema({
   street: { type: String, required: true },
   number: { type: String, required: true },
-  complement: { type: String, required: false },
+  complement: { type: String },
   neighborhood: { type: String, required: true },
   city: { type: String, required: true },
   state: { type: String, required: true },
