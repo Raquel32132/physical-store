@@ -6,6 +6,6 @@
     "outDir": "./dist",
     "esModuleInterop": true
   },
-  "include": ["src/**/*", "server.ts", "db"],
+  "include": ["server.ts", "db", "models"],
   "exclude": ["node_modules"]
 }
