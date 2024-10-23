@@ -9,6 +9,9 @@ Method: EXAMPLE
 Route: /example/example/example
 Status code: 000
 
+### Request Parameters
+- parameter: description
+
 ### Request body:
 ```json
 {
