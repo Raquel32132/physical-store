@@ -27,8 +27,18 @@ export const getAllStores = async (req: Request, res: Response) => {
   }
 }
 
-export const getStoreById = async (req: Request, res: Response) => {
+export const getStoreById = async (req: Request, res: Response): Promise<void> => {
   try {
+    const store = await storeService.getStoreById(req.params.id);
+
+    if (!store) {
+      res.status(404).json({
+        message: 'Store not found.'
+      });
+      return;
+    }
+
+    res.status(200).json(store);
 
   } catch (error: any) {
     res.status(400).json({
