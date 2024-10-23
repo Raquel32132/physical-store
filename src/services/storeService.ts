@@ -9,3 +9,7 @@ export const createStore = async (storeData: StoreProps): Promise<StoreProps> =>
 export const getAllStores = async (): Promise<StoreProps[]> => {
   return Store.find().populate('address');
 };
+
+export const getStoreById = async (id: string): Promise<StoreProps | null> => {
+  return Store.findById(id).populate('address');
+}
