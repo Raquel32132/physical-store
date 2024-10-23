@@ -1,10 +1,11 @@
 import { Router } from 'express';
-import { createStore } from '../controllers/storeController';
+import { createStore, getAllStores } from '../controllers/storeController';
 
 const router = Router();
 
 router
   .route('/')
+  .get(getAllStores)
   .post(createStore);
 
 export default router;
