@@ -1,10 +1,9 @@
-import express from 'express';
 import dotenv from 'dotenv';
+import app from './app';
 import { connectDatabase } from './mongoConnection';
 
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: './.env' });
 
-const app = express();
 const port = process.env.PORT || 3000
 
 connectDatabase();

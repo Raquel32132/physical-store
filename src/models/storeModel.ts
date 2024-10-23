@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { AddressProps } from './addressModel';
+import { addressSchema, AddressProps } from './addressModel';
 
-interface StoreProps extends Document {
+export interface StoreProps extends Document {
   name: string;
   description?: string;
   phoneNumber: string;
@@ -18,7 +18,7 @@ const storeSchema: Schema = new Schema({
   email: { type: String },
   openingHours: { type: String, required: true },
   isStoreOpenNow: { type: Boolean, required: true },
-  address: { type: Schema.Types.ObjectId, ref: 'Address', required: true }
+  address: { type: addressSchema, required: true }
 });
 
 export const Store = mongoose.model<StoreProps>('Store', storeSchema);

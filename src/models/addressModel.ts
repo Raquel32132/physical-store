@@ -11,7 +11,7 @@ export interface AddressProps extends Document {
   country: string;
 }
 
-const addressSchema: Schema = new Schema({
+export const addressSchema: Schema = new Schema({
   street: { type: String, required: true },
   number: { type: String, required: true },
   complement: { type: String },
