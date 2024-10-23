@@ -14,3 +14,15 @@ export const createStore = async (req: Request, res: Response) => {
     });
   }
 }
+
+export const getAllStores = async (req: Request, res: Response) => {
+  try {
+    const stores = await storeService.getAllStores();
+    res.status(200).json(stores);
+
+  } catch (error: any) {
+    res.status(400).json({
+      message: 'Error fetching stores.', error: error?.message
+    })
+  }
+}
