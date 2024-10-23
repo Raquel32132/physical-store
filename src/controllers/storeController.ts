@@ -26,3 +26,14 @@ export const getAllStores = async (req: Request, res: Response) => {
     })
   }
 }
+
+export const getStoreById = async (req: Request, res: Response) => {
+  try {
+
+  } catch (error: any) {
+    res.status(400).json({
+      message: 'Error fetching store.',
+      error: error?.message
+    })
+  }
+}
