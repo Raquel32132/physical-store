@@ -16,7 +16,7 @@ Status code: 000
 }
 ```
 
-### Response Structure
+### Response Structure:
 ```json
 {
   "example": "example",
