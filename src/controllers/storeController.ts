@@ -5,11 +5,14 @@ export const createStore = async (req: Request, res: Response) => {
   try {
     const store = await storeService.createStore(req.body);
     res.status(201).json({
-      message: 'Store created successfully.', store
+      status: 'success',
+      message: 'Store created successfully.', 
+      data: store
     });
 
   } catch (error: any) {
     res.status(400).json({
+      status: 'failed',
       message: 'Error creating store.', error: error?.message
     });
   }
@@ -18,10 +21,14 @@ export const createStore = async (req: Request, res: Response) => {
 export const getAllStores = async (req: Request, res: Response) => {
   try {
     const stores = await storeService.getAllStores();
-    res.status(200).json(stores);
+    res.status(200).json({
+      status: 'success',
+      data: stores
+    });
 
   } catch (error: any) {
     res.status(400).json({
+      status: 'failed',
       message: 'Error fetching stores.', error: error?.message
     })
   }
@@ -33,15 +40,20 @@ export const getStoreById = async (req: Request, res: Response): Promise<void> =
 
     if (!store) {
       res.status(404).json({
+        status: 'failed',
         message: 'Store not found.'
       });
       return;
     }
 
-    res.status(200).json(store);
+    res.status(200).json({
+      status: 'success',
+      data: store
+    });
 
   } catch (error: any) {
     res.status(400).json({
+      status: 'failed',
       message: 'Error fetching store.',
       error: error?.message
     })
