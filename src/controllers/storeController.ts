@@ -75,7 +75,7 @@ export const updateStore = async (req: Request, res: Response): Promise<void> =>
     }
 
     res.status(200).json({
-      status: 'failed',
+      status: 'success',
       message: 'Store updated successfully.',
       data: updatedStore
     })
