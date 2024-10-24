@@ -17,3 +17,7 @@ export const getStoreById = async (id: string): Promise<StoreProps | null> => {
 export const updateStore = async (id: string, updateData: Partial<StoreProps>): Promise<StoreProps | null> => {
   return Store.findByIdAndUpdate(id, updateData, { new: true }).populate('address');
 }
+
+export const deleteStore = async (id: string): Promise<StoreProps | null> => {
+  return Store.findByIdAndDelete(id);
+}

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createStore, getAllStores, getStoreById, updateStore } from '../controllers/storeController';
+import { createStore, deleteStore, getAllStores, getStoreById, updateStore } from '../controllers/storeController';
 
 const router = Router();
 
@@ -11,6 +11,7 @@ router
 router
   .route('/:id')
   .get(getStoreById)
-  .patch(updateStore);
+  .patch(updateStore)
+  .delete(deleteStore);
 
 export default router;

@@ -88,3 +88,29 @@ export const updateStore = async (req: Request, res: Response): Promise<void> =>
     })
   }
 }
+
+export const deleteStore = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const deletedStore = await storeService.deleteStore(req.params.id);
+  
+    if (!deletedStore) {
+      res.status(404).json({
+        stauts: 'failed',
+        message: 'Store not found.'
+      })
+      return;
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Store deleted successfully.'
+    })
+    
+  } catch (error: any) {
+    res.status(400).json({
+      status: 'failed',
+      message: 'Error deleting store data.',
+      error: error.message
+    })
+  }
+}
