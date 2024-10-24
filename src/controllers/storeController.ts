@@ -13,7 +13,8 @@ export const createStore = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       status: 'failed',
-      message: 'Error creating store.', error: error?.message
+      message: 'Error creating store.', 
+      error: error.message
     });
   }
 }
@@ -29,7 +30,8 @@ export const getAllStores = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       status: 'failed',
-      message: 'Error fetching stores.', error: error?.message
+      message: 'Error fetching stores.', 
+      error: error.message
     })
   }
 }
@@ -55,7 +57,34 @@ export const getStoreById = async (req: Request, res: Response): Promise<void> =
     res.status(400).json({
       status: 'failed',
       message: 'Error fetching store.',
-      error: error?.message
+      error: error.message
+    })
+  }
+}
+
+export const updateStore = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const updatedStore = await storeService.updateStore(req.params.id, req.body);
+
+    if (!updatedStore) {
+      res.status(404).json({
+        status: 'failed',
+        message: 'Store not found.'
+      })
+      return;
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Store updated successfully.',
+      data: updatedStore
+    })
+
+  } catch (error: any) {
+    res.status(400).json({
+      status: 'failed',
+      message: 'Error updating store data.',
+      error: error.message
     })
   }
 }

@@ -13,3 +13,7 @@ export const getAllStores = async (): Promise<StoreProps[]> => {
 export const getStoreById = async (id: string): Promise<StoreProps | null> => {
   return Store.findById(id).populate('address');
 }
+
+export const updateStore = async (id: string, updateData: Partial<StoreProps>): Promise<StoreProps | null> => {
+  return Store.findByIdAndUpdate(id, updateData, { new: true }).populate('address');
+}
