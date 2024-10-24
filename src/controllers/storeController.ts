@@ -66,7 +66,7 @@ export const updateStore = async (req: Request, res: Response): Promise<void> =>
   try {
     const updatedStore = await storeService.updateStore(req.params.id, req.body);
 
-    if (!updateStore) {
+    if (!updatedStore) {
       res.status(404).json({
         status: 'failed',
         message: 'Store not found.'
