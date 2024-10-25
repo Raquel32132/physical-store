@@ -1,14 +1,16 @@
-import fetch from "node-fetch";
+import axios from 'axios';
+import { AddressProps } from '../models/addressModel';
 
 export const getAddressByCep = async (cep: string): Promise<any> => {
   const url = `https://viacep.com.br/ws/${cep}/json/`;
 
-  const response = await fetch(url);
-  const address = await response.json();
+  try {
+    const response = await axios.get<AddressProps>(url);
+    const address = response.data;
 
-  if (!address) {
-    throw new Error('CEP inválido.');
+    console.log(address);
+
+  } catch (error) {
+    throw new Error('Erro ao buscar CEP');
   }
-
-  return address
 }

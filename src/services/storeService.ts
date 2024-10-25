@@ -3,21 +3,7 @@ import { Store, StoreProps } from "../models/storeModel"
 import { getAddressByCep } from "./addressService";
 
 export const createStore = async (storeData: any): Promise<StoreProps> => {
-  const { cep, number, complement } = storeData;
-  const addressData = await getAddressByCep(cep);
-
-  const completeAddress = new Address({
-    street: addressData.logradouro,
-    neighborhood: addressData.bairro,
-    city: addressData.localidade,
-    state: addressData.uf,
-    postalCode: cep,
-    number: number,
-    complement: complement || ''
-  });
-  await completeAddress.save();
-
-  const store = new Store({ ...storeData, address: completeAddress._id });
+  const store = new Store({ ...storeData });
   await store.save();
   return store;
 };
