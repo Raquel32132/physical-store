@@ -8,7 +8,7 @@ export const getAddressByCep = async (cep: string): Promise<any> => {
     const response = await axios.get<AddressProps>(url);
     const address = response.data;
 
-    console.log(address);
+    return address;
 
   } catch (error) {
     throw new Error('Erro ao buscar CEP');

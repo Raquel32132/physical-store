@@ -2,8 +2,35 @@ import { Address } from "../models/addressModel";
 import { Store, StoreProps } from "../models/storeModel"
 import { getAddressByCep } from "./addressService";
 
-export const createStore = async (storeData: any): Promise<StoreProps> => {
-  const store = new Store({ ...storeData });
+interface storeDataProps {
+  name: string;
+  description?: string;
+  phoneNumber: string;
+  email?: string;
+  openingHours: string;
+  isStoreOpenNow: boolean;
+  address: {
+    postalCode: string;
+    number: string;
+    complement?: string;
+  }
+}
+
+export const createStore = async (storeData: storeDataProps): Promise<StoreProps> => {
+
+  const addressData = await getAddressByCep(storeData.address.postalCode);
+
+  const completeAddress = new Address({
+    street: addressData.logradouro,
+    neighborhood: addressData.bairro,
+    city: addressData.localidade,
+    state: addressData.estado,
+    postalCode: storeData.address.postalCode,
+    number: storeData.address.number,
+    complement: storeData.address?.complement
+  });
+
+  const store = new Store({ ...storeData, address: completeAddress });
   await store.save();
   return store;
 };
