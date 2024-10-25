@@ -8,7 +8,6 @@ export interface AddressProps extends Document {
   city: string;
   state: string;
   postalCode: string;
-  country: string;
 }
 
 export const addressSchema: Schema = new Schema({
@@ -19,7 +18,6 @@ export const addressSchema: Schema = new Schema({
   city: { type: String, required: true },
   state: { type: String, required: true },
   postalCode: { type: String, required: true },
-  country: { type: String, required: true }
 });
 
 export const Address = mongoose.model<AddressProps>('Address', addressSchema);
