@@ -1,6 +1,6 @@
 import { Address } from "../models/addressModel";
 import { Store, StoreProps } from "../models/storeModel"
-import { getAddressByCep } from "./addressService";
+import { getAddressByCep, getCoordinates } from "./addressService";
 
 interface storeDataProps {
   name: string;
@@ -17,7 +17,6 @@ interface storeDataProps {
 }
 
 export const createStore = async (storeData: storeDataProps): Promise<StoreProps> => {
-
   const addressData = await getAddressByCep(storeData.address.postalCode);
 
   const completeAddress = new Address({
