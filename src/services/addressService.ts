@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { AddressProps } from '../models/addressModel';
 import { calculateHaversineDistance } from '../utils/calculateHaversineDistance';
+import { StoreProps } from '../models/storeModel';
 
 export const getAddressByPostalCode = async (cep: string): Promise<any> => {
   const url = `${process.env.VIA_CEP_URL}/${cep}/json/`;
@@ -33,7 +34,7 @@ export const getCoordinates = async (address: string): Promise<{ latitude: numbe
 
 export const findNearbyStores = async (
   postalCode: string,
-  stores: Array<{ name: string; latitude: number; longitude: number }>
+  stores: Array<StoreProps>
 ): Promise<Array<{ name: string; distance: number }>> => {
 
   const addressData = await getAddressByPostalCode(postalCode);
@@ -43,7 +44,7 @@ export const findNearbyStores = async (
 
   const nearbyStores = stores.map(store => ({
     name: store.name,
-    distance: calculateHaversineDistance(userCoordinates.latitude, userCoordinates.longitude, store.latitude, store.longitude)
+    distance: calculateHaversineDistance(userCoordinates.latitude, userCoordinates.longitude, store.address.latitude, store.address.longitude)
   }))
   .filter(store => store.distance <= 100)
   .sort((a, b) => a.distance = b.distance);
