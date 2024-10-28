@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as storeService from '../services/storeService';
+import { findNearbyStores } from '../services/addressService';
 
 export const createStore = async (req: Request, res: Response) => {
   try {
@@ -110,6 +111,36 @@ export const deleteStore = async (req: Request, res: Response): Promise<void> =>
     res.status(400).json({
       status: 'failed',
       message: 'Error deleting store data.',
+      error: error.message
+    })
+  }
+}
+
+export const getNearbyStores = async (req: Request, res: Response): Promise<void> => {
+  const postalCode = req.params.postalCode as string;
+
+  if (!postalCode) {
+    res.status(400).json({ error: 'Postal code is required.' });
+    return;
+  }
+
+  try {
+    const allStores = await storeService.getAllStores();
+    console.log(allStores);
+    
+    const nearbyStores = await findNearbyStores(postalCode, allStores);
+
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Nearby stores within 100km of postal code.',
+      stores: nearbyStores
+    })
+
+  } catch (error: any) {
+    res.status(500).json({
+      status: 'failed',
+      message: 'Error fetching nearby stores.',
       error: error.message
     })
   }
