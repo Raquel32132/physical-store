@@ -12,7 +12,7 @@ export const getAddressByPostalCode = async (cep: string): Promise<any> => {
     return address;
 
   } catch (error) {
-    throw new Error('Erro ao buscar CEP.');
+    throw new Error('Error searching for postal code.');
   }
 }
 
@@ -27,7 +27,7 @@ export const getCoordinates = async (address: string): Promise<{ latitude: numbe
     return { latitude: latitude, longitude: longitude };
     
   } catch (error) {
-    throw new Error('Erro ao buscar coordenadas.')
+    throw new Error('Error searching for coordinates.')
   }
 }
 
