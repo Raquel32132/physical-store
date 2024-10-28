@@ -42,10 +42,15 @@ export const findNearbyStores = async (
 
   const userCoordinates = await getCoordinates(formattedAddress);
 
-  const nearbyStores = stores.map(store => ({
-    name: store.name,
-    distance: calculateHaversineDistance(userCoordinates.latitude, userCoordinates.longitude, store.address.latitude, store.address.longitude)
-  }))
+  const nearbyStores = stores.map(store => {
+
+    const distance = calculateHaversineDistance(userCoordinates.latitude, userCoordinates.longitude, store.address.latitude, store.address.longitude);
+
+    return {
+      name: store.name,
+      distance: parseFloat(distance.toFixed(3))
+    }
+  })
   .filter(store => store.distance <= 100)
   .sort((a, b) => a.distance - b.distance);
 
