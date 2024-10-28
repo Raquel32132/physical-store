@@ -1,6 +1,6 @@
 import { Address } from "../models/addressModel";
 import { Store, StoreProps } from "../models/storeModel"
-import { getAddressByPostalCode } from "./addressService";
+import { getAddressByPostalCode, getCoordinates } from "./addressService";
 
 interface storeDataProps {
   name: string;
@@ -19,6 +19,9 @@ interface storeDataProps {
 export const createStore = async (storeData: storeDataProps): Promise<StoreProps> => {
   const addressData = await getAddressByPostalCode(storeData.address.postalCode);
 
+  const formattedAddress = `${addressData.logradouro},${addressData.uf},${addressData.localidade}`;
+  const coordinates = await getCoordinates(formattedAddress);
+
   const completeAddress = new Address({
     street: addressData.logradouro,
     neighborhood: addressData.bairro,
@@ -26,7 +29,10 @@ export const createStore = async (storeData: storeDataProps): Promise<StoreProps
     state: addressData.estado,
     postalCode: storeData.address.postalCode,
     number: storeData.address.number,
-    complement: storeData.address?.complement
+    complement: storeData.address?.complement,
+    country: 'Brasil',
+    latitude: coordinates.latitude,
+    longitude: coordinates.longitude
   });
 
   const store = new Store({ ...storeData, address: completeAddress });
