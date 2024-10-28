@@ -21,9 +21,9 @@ export const getCoordinates = async (address: string): Promise<{ latitude: numbe
 
   try {
     const response = await axios.get(url);
-    const { lat, lng } = response.data.results[0].geometry;
+    const { latitude, longitude } = response.data.results[0].geometry;
 
-    return { latitude: lat, longitude: lng };
+    return { latitude: latitude, longitude: longitude };
     
   } catch (error) {
     throw new Error('Erro ao buscar coordenadas.')
