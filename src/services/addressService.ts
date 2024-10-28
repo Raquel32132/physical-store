@@ -47,7 +47,7 @@ export const findNearbyStores = async (
     distance: calculateHaversineDistance(userCoordinates.latitude, userCoordinates.longitude, store.address.latitude, store.address.longitude)
   }))
   .filter(store => store.distance <= 100)
-  .sort((a, b) => a.distance = b.distance);
+  .sort((a, b) => a.distance - b.distance);
 
   return nearbyStores;
 }

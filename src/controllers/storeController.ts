@@ -116,16 +116,20 @@ export const deleteStore = async (req: Request, res: Response): Promise<void> =>
   }
 }
 
-export const getNearbyStores = async (req: Request, res: Response) => {
-  const postalCode = req.query.postalCode as string;
+export const getNearbyStores = async (req: Request, res: Response): Promise<void> => {
+  const postalCode = req.params.postalCode as string;
 
   if (!postalCode) {
-    return res.status(400).json({ error: 'Postal code is required.' });
+    res.status(400).json({ error: 'Postal code is required.' });
+    return;
   }
 
   try {
     const allStores = await storeService.getAllStores();
+    console.log(allStores);
+    
     const nearbyStores = await findNearbyStores(postalCode, allStores);
+
 
     res.status(200).json({
       status: 'success',
