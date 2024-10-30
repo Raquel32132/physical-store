@@ -10,5 +10,4 @@ export const ERROR_MESSAGES = {
   INTERNAL:  'Internal server error'
 } as const;
 
-export type ErrorType = keyof typeof ERROR_TYPES;
-export type ErrorMessage = keyof typeof ERROR_MESSAGES;
+export type ErrorType = typeof ERROR_TYPES[keyof typeof ERROR_TYPES];
