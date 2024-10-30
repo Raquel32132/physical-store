@@ -27,6 +27,9 @@ export const HTTPErrorHandler = (err: AppError, req: Request, res: Response, nex
   } else if (err.type === ERROR_TYPES.INVALID_DATA) {
     statusCode = 400;
     message = err.message || ERROR_MESSAGES.INVALID_DATA;
+  } else if (err.type === ERROR_TYPES.REQUEST) {
+    statusCode = 400;
+    message = err.message || ERROR_MESSAGES.REQUEST;
   }
 
   res.status(statusCode).json({

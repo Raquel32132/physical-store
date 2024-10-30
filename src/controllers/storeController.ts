@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as storeService from '../services/storeService';
 import { findNearbyStores } from '../services/addressService';
+import { ERROR_TYPES } from '../constants/errors';
 
-export const createStore = async (req: Request, res: Response) => {
+export const createStore = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const store = await storeService.createStore(req.body);
     res.status(201).json({
@@ -12,15 +13,14 @@ export const createStore = async (req: Request, res: Response) => {
     });
 
   } catch (error: any) {
-    res.status(400).json({
-      status: 'failed',
-      message: 'Error creating store.', 
-      error: error.message
+    next({
+      type: ERROR_TYPES.REQUEST, 
+      message: 'Error creating store.'
     });
   }
 }
 
-export const getAllStores = async (req: Request, res: Response) => {
+export const getAllStores = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const stores = await storeService.getAllStores();
     res.status(200).json({
@@ -29,24 +29,22 @@ export const getAllStores = async (req: Request, res: Response) => {
     });
 
   } catch (error: any) {
-    res.status(400).json({
-      status: 'failed',
-      message: 'Error fetching stores.', 
-      error: error.message
-    })
+    next({
+      type: ERROR_TYPES.REQUEST, 
+      message: 'Error fetching stores.'
+    });
   }
 }
 
-export const getStoreById = async (req: Request, res: Response): Promise<void> => {
+export const getStoreById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const store = await storeService.getStoreById(req.params.id);
 
     if (!store) {
-      res.status(404).json({
-        status: 'failed',
+      return next({
+        type: ERROR_TYPES.NOT_FOUND,
         message: 'Store not found.'
       });
-      return;
     }
 
     res.status(200).json({
@@ -55,24 +53,22 @@ export const getStoreById = async (req: Request, res: Response): Promise<void> =
     });
 
   } catch (error: any) {
-    res.status(400).json({
-      status: 'failed',
-      message: 'Error fetching store.',
-      error: error.message
-    })
+    next({
+      type: ERROR_TYPES.REQUEST,
+      message: 'Error fetching store.'
+    });
   }
 }
 
-export const updateStore = async (req: Request, res: Response): Promise<void> => {
+export const updateStore = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const updatedStore = await storeService.updateStore(req.params.id, req.body);
 
     if (!updatedStore) {
-      res.status(404).json({
-        status: 'failed',
+      return next({
+        type: ERROR_TYPES.NOT_FOUND,
         message: 'Store not found.'
-      })
-      return;
+      });
     }
 
     res.status(200).json({
@@ -82,24 +78,22 @@ export const updateStore = async (req: Request, res: Response): Promise<void> =>
     })
 
   } catch (error: any) {
-    res.status(400).json({
-      status: 'failed',
-      message: 'Error updating store data.',
-      error: error.message
-    })
+    next({
+      type: ERROR_TYPES.REQUEST,
+      message: 'Error updating store data.'
+    });
   }
 }
 
-export const deleteStore = async (req: Request, res: Response): Promise<void> => {
+export const deleteStore = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const deletedStore = await storeService.deleteStore(req.params.id);
   
     if (!deletedStore) {
-      res.status(404).json({
-        stauts: 'failed',
+      return next({
+        type: ERROR_TYPES.NOT_FOUND,
         message: 'Store not found.'
-      })
-      return;
+      });
     }
 
     res.status(200).json({
@@ -108,15 +102,14 @@ export const deleteStore = async (req: Request, res: Response): Promise<void> =>
     })
     
   } catch (error: any) {
-    res.status(400).json({
-      status: 'failed',
-      message: 'Error deleting store data.',
-      error: error.message
-    })
+    next({
+      type: ERROR_TYPES.REQUEST,
+      message: 'Error deleting store data.'
+    });
   }
 }
 
-export const getNearbyStores = async (req: Request, res: Response): Promise<void> => {
+export const getNearbyStores = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const postalCode = req.params.postalCode as string;
 
   if (!postalCode) {

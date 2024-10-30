@@ -3,7 +3,8 @@ export const ERROR_TYPES = {
   NOT_FOUND: 'NotFoundError',
   DATABASE: 'DatabaseError',
   REQUIRED_FIELD: 'RequiredFieldError',
-  INVALID_DATA: 'InvalidDataError' 
+  INVALID_DATA: 'InvalidDataError',
+  REQUEST: 'RequestError'
 } as const;
 
 export const ERROR_MESSAGES = {
@@ -11,7 +12,8 @@ export const ERROR_MESSAGES = {
   NOT_FOUND: 'Resource not found',
   INTERNAL:  'Internal server error',
   REQUIRED_FIELD: 'Required field missing',
-  INVALID_DATA: 'Invalid data provided' 
+  INVALID_DATA: 'Invalid data provided',
+  REQUEST: 'Request error' 
 } as const;
 
 export type ErrorType = typeof ERROR_TYPES[keyof typeof ERROR_TYPES];
