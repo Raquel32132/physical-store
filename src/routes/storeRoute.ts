@@ -11,7 +11,7 @@ router
 router
   .route('/:id')
   .get(getStoreById)
-  .patch(updateStore)
+  .put(updateStore)
   .delete(deleteStore);
 
 router
