@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { addressSchema, AddressProps } from './addressModel';
+import { timeStamp } from 'console';
 
 export interface StoreProps extends Document {
   name: string;
@@ -8,6 +9,8 @@ export interface StoreProps extends Document {
   email?: string;
   openingHours: string;
   address: AddressProps;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const storeSchema: Schema = new Schema({
@@ -38,6 +41,11 @@ const storeSchema: Schema = new Schema({
   address: { 
     type: addressSchema, 
     required: [true, 'Address is required.'] 
+  },
+}, {
+  timestamps: {
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   }
 });
 
