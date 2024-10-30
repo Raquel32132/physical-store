@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { addressSchema, AddressProps } from './addressModel';
-import { timeStamp } from 'console';
 
 export interface StoreProps extends Document {
   name: string;
