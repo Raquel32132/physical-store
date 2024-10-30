@@ -21,6 +21,9 @@ export const HTTPErrorHandler = (err: AppError, req: Request, res: Response, nex
   } else if (err.type === ERROR_TYPES.DATABASE) {
       statusCode = 500;
       message = err.message || 'Database operation failed';
+  } else if (err.type === ERROR_TYPES.REQUIRED_FIELD) {
+    statusCode = 400;
+    message = err.message || ERROR_MESSAGES.REQUIRED_FIELD;
   }
 
   res.status(statusCode).json({

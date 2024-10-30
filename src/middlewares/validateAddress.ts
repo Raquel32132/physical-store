@@ -6,6 +6,14 @@ export const validatePostalCode = async (req: Request, res: Response, next: Next
   const postalCode = req.body.address.postalCode;
   const postalCodePattern = /^\d{5}-\d{3}$/;
 
+  if (!postalCode) {
+    const error = {
+      type: ERROR_TYPES.REQUIRED_FIELD,
+      message: 'Postal code is required.'
+    }
+    return next(error);
+  }
+
   if (!postalCodePattern.test(postalCode)) {
     const error = {
       type: ERROR_TYPES.VALIDATION,
