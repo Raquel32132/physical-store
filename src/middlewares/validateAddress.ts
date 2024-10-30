@@ -1,13 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
+import { ERROR_TYPES } from '../constants/errors';
 
 export const validatePostalCode = async (req: Request, res: Response, next: NextFunction) => {
   const postalCode = req.body.address.postalCode;
   const postalCodePattern = /^\d{5}-\d{3}$/;
 
   if (!postalCodePattern.test(postalCode)) {
-    const error = new Error('Invalid postal code format.');
-    res.status(400);
+    const error = {
+      type: ERROR_TYPES.VALIDATION,
+      message: 'Invalid postal code format.'
+    }
     return next(error);
   }
 
@@ -15,8 +18,10 @@ export const validatePostalCode = async (req: Request, res: Response, next: Next
     const response = await axios.get(`${process.env.VIA_CEP_URL}/${postalCode}/json/`);
 
     if (response.data && response.data.erro) {
-      const error = new Error('Postal code does not exist.');
-      res.status(400);
+      const error = {
+        type: ERROR_TYPES.NOT_FOUND,
+        message: 'Postal code does not exist.'
+      }
       return next(error);
     }
 

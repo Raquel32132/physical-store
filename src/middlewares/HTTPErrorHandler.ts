@@ -6,7 +6,7 @@ interface AppError {
   message: string;
 }
 
-const HTTPErrorHandler = (err: AppError, req: Request, res: Response, next: NextFunction): Response => {
+export const HTTPErrorHandler = (err: AppError, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
 
   let statusCode = 500;
@@ -23,7 +23,7 @@ const HTTPErrorHandler = (err: AppError, req: Request, res: Response, next: Next
       message = err.message || 'Database operation failed';
   }
 
-  return res.status(statusCode).json({
+  res.status(statusCode).json({
     status: statusCode === 500 ? 'error' : 'fail',
     message
   });
