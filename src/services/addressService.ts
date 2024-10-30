@@ -3,8 +3,8 @@ import { AddressProps } from '../models/addressModel';
 import { calculateHaversineDistance } from '../utils/calculateHaversineDistance';
 import { StoreProps } from '../models/storeModel';
 
-export const getAddressByPostalCode = async (cep: string): Promise<any> => {
-  const url = `${process.env.VIA_CEP_URL}/${cep}/json/`;
+export const getAddressByPostalCode = async (postalCode: string): Promise<any> => {
+  const url = `${process.env.VIA_CEP_URL}/${postalCode}/json/`;
 
   try {
     const response = await axios.get<AddressProps>(url);
@@ -32,7 +32,7 @@ export const getCoordinates = async (address: string): Promise<{ latitude: numbe
   }
 }
 
-export const findNearbyStores = async (
+export const findNearbyStores = async ( //refatorar, esta como uma função muito especifica, ao inves de buscar lojas, buscar endereços e parametrizar as entradas
   postalCode: string,
   stores: Array<StoreProps>
 ): Promise<Array<{ name: string; distance: number }>> => {

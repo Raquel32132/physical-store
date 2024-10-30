@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { createStore, deleteStore, getAllStores, getNearbyStores, getStoreById, updateStore } from '../controllers/storeController';
-import { validatePostalCode } from '../middlewares/validateAddress';
+import { validateAddressPayload, validatePostalCode } from '../middlewares/validateAddress';
 
 const router = Router();
 
 router
   .route('/')
   .get(getAllStores)
-  .post(validatePostalCode, createStore);
+  .post(validateAddressPayload, validatePostalCode, createStore);
 
 router
   .route('/:id')
@@ -17,6 +17,6 @@ router
 
 router
   .route('/nearby/:postalCode')
-  .get(getNearbyStores);
+  .get(validateAddressPayload, getNearbyStores);
 
 export default router;

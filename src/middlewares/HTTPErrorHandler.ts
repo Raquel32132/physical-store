@@ -24,6 +24,9 @@ export const HTTPErrorHandler = (err: AppError, req: Request, res: Response, nex
   } else if (err.type === ERROR_TYPES.REQUIRED_FIELD) {
     statusCode = 400;
     message = err.message || ERROR_MESSAGES.REQUIRED_FIELD;
+  } else if (err.type === ERROR_TYPES.INVALID_DATA) {
+    statusCode = 400;
+    message = err.message || ERROR_MESSAGES.INVALID_DATA;
   }
 
   res.status(statusCode).json({
