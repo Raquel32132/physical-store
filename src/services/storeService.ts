@@ -1,3 +1,5 @@
+import { ERROR_TYPES } from "../constants/errors";
+import { validatePostalCodeFuntion } from "../middlewares/validateAddress";
 import { Address, AddressProps } from "../models/addressModel";
 import { Store, StoreProps } from "../models/storeModel"
 import * as addressService from "./addressService";
@@ -45,7 +47,7 @@ export const getAllStores = async (): Promise<StoreProps[]> => {
 };
 
 export const getStoreById = async (id: string): Promise<StoreProps | null> => {
-  return Store.findById(id).populate('address');
+  return await Store.findById(id).populate('address');
 };
 
 export const updateStore = async (id: string, updateData: Partial<StoreProps>): Promise<StoreProps | null> => {
@@ -56,6 +58,8 @@ export const updateStore = async (id: string, updateData: Partial<StoreProps>): 
       const addressData = await addressService.getAddressByPostalCode(postalCode);
       const formattedAddress = `${addressData.logradouro}, ${addressData.uf}, ${addressData.localidade}`
       const coordinates = await addressService.getCoordinates(formattedAddress);
+
+      validatePostalCodeFuntion(postalCode)
 
       updateData.address = {
         street: addressData.logradouro,
