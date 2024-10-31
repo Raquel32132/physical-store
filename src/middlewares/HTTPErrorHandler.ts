@@ -15,7 +15,7 @@ export const HTTPErrorHandler = (err: AppError, req: Request, res: Response, nex
 
   if (err.name === 'CastError') {
     statusCode = 404;
-    message = err.message;
+    message = 'ID not found'
   } else if (err.type === ERROR_TYPES.VALIDATION) {
     statusCode = 400;
     message = err.message || ERROR_MESSAGES.VALIDATION;

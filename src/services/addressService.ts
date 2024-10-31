@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { ERROR_TYPES } from '../constants/errors';
+import { StoreProps } from '../models/storeModel';
 import { AddressProps } from '../models/addressModel';
 import { calculateHaversineDistance } from '../utils/calculateHaversineDistance';
-import { StoreProps } from '../models/storeModel';
-import { ERROR_TYPES } from '../constants/errors';
+import { validatePostalCode } from '../utils/validatePostalCode';
 
 export const getAddressByPostalCode = async (postalCode: string): Promise<any> => {
   const url = `${process.env.VIA_CEP_URL}/${postalCode}/json/`;
@@ -37,27 +38,32 @@ export const getCoordinates = async (address: string): Promise<{ latitude: numbe
   return { latitude: lat, longitude: lng };
 }
 
-export const findNearbyStores = async ( //refatorar, esta como uma função muito especifica, ao inves de buscar lojas, buscar endereços e parametrizar as entradas
+export const findNearbyStores = async (
   postalCode: string,
-  stores: Array<StoreProps>
-): Promise<Array<{ name: string; distance: number }>> => {
-
+  stores: Array<StoreProps>,
+  maxDistance: number
+): Promise<Array<StoreProps & { distance: number }>> => {
+  await validatePostalCode(postalCode);
   const addressData = await getAddressByPostalCode(postalCode);
   const formattedAddress = `${addressData.logradouro},${addressData.uf},${addressData.localidade}`;
 
   const userCoordinates = await getCoordinates(formattedAddress);
 
   const nearbyStores = stores.map(store => {
-
-    const distance = calculateHaversineDistance(userCoordinates.latitude, userCoordinates.longitude, store.address.latitude, store.address.longitude);
+    const distance = calculateHaversineDistance(
+      userCoordinates.latitude,
+      userCoordinates.longitude,
+      store.address.latitude,
+      store.address.longitude
+    );
 
     return {
-      name: store.name,
-      distance: parseFloat(distance.toFixed(3))
-    }
+      ...store.toObject(),
+      distance: parseFloat(distance.toFixed(3)) 
+    };
   })
-  .filter(store => store.distance <= 100)
+  .filter(store => store.distance <= maxDistance)
   .sort((a, b) => a.distance - b.distance);
 
   return nearbyStores;
-}
+};

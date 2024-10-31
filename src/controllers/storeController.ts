@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as storeService from '../services/storeService';
 import { findNearbyStores } from '../services/addressService';
+import { validatePostalCode } from '../utils/validatePostalCode';
 
 export const createStore = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -73,27 +74,21 @@ export const deleteStore = async (req: Request, res: Response, next: NextFunctio
 }
 
 export const getNearbyStores = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const postalCode = req.params.postalCode as string;
-
-  if (!postalCode) {
-    res.status(400).json({ error: 'Postal code is required.' });
-    return;
-  }
+  const postalCode = req.params.postalCode;
+  const maxDistance = Number(req.query.distance) || 100;
 
   try {
     const allStores = await storeService.getAllStores();
-    console.log(allStores);
-    
-    const nearbyStores = await findNearbyStores(postalCode, allStores);
-
+    const nearbyStores = await findNearbyStores(postalCode, allStores, maxDistance);
 
     res.status(200).json({
       status: 'success',
-      message: 'Nearby stores within 100km of postal code.',
+      message: `Nearby stores within ${maxDistance}km of postal code.`,
       stores: nearbyStores
-    })
+    });
 
   } catch (error) {
     next(error);
   }
-}
+};
+

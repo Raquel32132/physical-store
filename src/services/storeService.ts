@@ -18,7 +18,7 @@ interface storeDataProps {
 };
 
 export const createStore = async (storeData: storeDataProps): Promise<StoreProps> => {
-  validatePostalCode(storeData.address.postalCode);
+  await validatePostalCode(storeData.address.postalCode);
   const addressData = await addressService.getAddressByPostalCode(storeData.address.postalCode);
 
   const formattedAddress = `${addressData.logradouro},${addressData.uf},${addressData.localidade}`;
@@ -56,7 +56,7 @@ export const updateStore = async (id: string, updateData: Partial<StoreProps>): 
 
     if (postalCode) {
       const addressData = await addressService.getAddressByPostalCode(postalCode);
-      validatePostalCode(postalCode);
+      await validatePostalCode(postalCode);
 
       const formattedAddress = `${addressData.logradouro}, ${addressData.uf}, ${addressData.localidade}`
       const coordinates = await addressService.getCoordinates(formattedAddress);
