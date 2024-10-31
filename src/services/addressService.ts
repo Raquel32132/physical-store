@@ -24,15 +24,17 @@ export const getCoordinates = async (address: string): Promise<{ latitude: numbe
   const formattedAddress = address.replace(/ /g, '+');
   const url = `${process.env.OPENCAGE_URL}?q=${encodeURIComponent(formattedAddress)}&key=${process.env.OPENCAGE_API_KEY}`;
 
-  try {
-    const response = await axios.get(url);
-    const { lat, lng } = response.data.results[0].geometry;
+  const response = await axios.get(url);
+  const { lat, lng } = response.data.results[0].geometry;
 
-    return { latitude: lat, longitude: lng };
-    
-  } catch (error) {
-    throw new Error('Error searching for coordinates.')
+  if (!lat || !lng) {
+    throw {
+      type: ERROR_TYPES.NOT_FOUND,
+      message: 'Error searching for coordinates.'
+    }
   }
+
+  return { latitude: lat, longitude: lng };
 }
 
 export const findNearbyStores = async ( //refatorar, esta como uma função muito especifica, ao inves de buscar lojas, buscar endereços e parametrizar as entradas
