@@ -17,6 +17,7 @@
     "mongodb": "^6.9.0",
     "mongoose": "^8.7.2",
     "typescript": "^5.6.3",
+    "uuid": "^11.0.2",
     "winston": "^3.15.0"
   },
   "devDependencies": {
