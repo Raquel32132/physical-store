@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ERROR_TYPES } from '../constants/errors';
 
-export const validatePostalCodeFuntion = async (postalCode: string) => {
+export const validatePostalCode = async (postalCode: string) => {
   const postalCodePattern = /^\d{5}-\d{3}$/;
 
   if (!postalCode) {

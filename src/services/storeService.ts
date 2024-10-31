@@ -1,7 +1,6 @@
-import { ERROR_TYPES } from "../constants/errors";
-import { validatePostalCodeFuntion } from "../middlewares/validateAddress";
 import { Address, AddressProps } from "../models/addressModel";
 import { Store, StoreProps } from "../models/storeModel"
+import { validatePostalCode } from "../utils/validatePostalCode";
 import * as addressService from "./addressService";
 
 interface storeDataProps {
@@ -19,6 +18,7 @@ interface storeDataProps {
 };
 
 export const createStore = async (storeData: storeDataProps): Promise<StoreProps> => {
+  validatePostalCode(storeData.address.postalCode);
   const addressData = await addressService.getAddressByPostalCode(storeData.address.postalCode);
 
   const formattedAddress = `${addressData.logradouro},${addressData.uf},${addressData.localidade}`;
@@ -56,10 +56,10 @@ export const updateStore = async (id: string, updateData: Partial<StoreProps>): 
 
     if (postalCode) {
       const addressData = await addressService.getAddressByPostalCode(postalCode);
+      validatePostalCode(postalCode);
+
       const formattedAddress = `${addressData.logradouro}, ${addressData.uf}, ${addressData.localidade}`
       const coordinates = await addressService.getCoordinates(formattedAddress);
-
-      validatePostalCodeFuntion(postalCode)
 
       updateData.address = {
         street: addressData.logradouro,
