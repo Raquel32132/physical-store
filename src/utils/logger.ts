@@ -1,19 +1,14 @@
 import winston from "winston";
 import { Request } from 'express';
 
-const { combine, timestamp, printf, json, colorize } = winston.format;
-
-const logFormat = printf(({ level, message, timestamp, correlationId }) => {
-  return `${timestamp} [${level}]: ${message} ${correlationId ? `(correlationId: ${correlationId})` : ''}`;
-});
+const { combine, timestamp, json, prettyPrint  } = winston.format;
 
 export const logger = winston.createLogger({
   level: 'info',
   format: combine (
-    colorize(),
     timestamp(),
     json(),
-    logFormat
+    prettyPrint()
   ),
   transports: [
     new winston.transports.Console()
