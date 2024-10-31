@@ -4,12 +4,12 @@ import { ERROR_TYPES } from '../constants/errors';
 export const validatePostalCode = async (postalCode: string) => {
   const postalCodePattern = /^\d{5}-\d{3}$/;
 
-  // if (!postalCode) {
-  //   throw {
-  //     type: ERROR_TYPES.REQUIRED_FIELD,
-  //     message: 'Postal code is required.'
-  //   };
-  // }
+  if (!postalCode) {
+    throw {
+      type: ERROR_TYPES.REQUIRED_FIELD,
+      message: 'Postal code is required.'
+    };
+  }
 
   if (!postalCodePattern.test(postalCode)) {
     throw {
