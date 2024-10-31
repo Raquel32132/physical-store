@@ -2,19 +2,22 @@ import axios from 'axios';
 import { AddressProps } from '../models/addressModel';
 import { calculateHaversineDistance } from '../utils/calculateHaversineDistance';
 import { StoreProps } from '../models/storeModel';
+import { ERROR_TYPES } from '../constants/errors';
 
 export const getAddressByPostalCode = async (postalCode: string): Promise<any> => {
   const url = `${process.env.VIA_CEP_URL}/${postalCode}/json/`;
 
-  try {
     const response = await axios.get<AddressProps>(url);
     const address = response.data;
 
-    return address;
+    if (!postalCode) {
+      throw {
+        type: ERROR_TYPES.NOT_FOUND,
+        message: 'Error searching for postal code.'
+      }
+    }
 
-  } catch (error) {
-    throw new Error('Error searching for postal code.');
-  }
+    return address;
 }
 
 export const getCoordinates = async (address: string): Promise<{ latitude: number; longitude: number}> => {

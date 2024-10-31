@@ -12,11 +12,8 @@ export const createStore = async (req: Request, res: Response, next: NextFunctio
       data: store
     });
 
-  } catch (error: any) {
-    next({
-      type: ERROR_TYPES.REQUEST, 
-      message: 'Error creating store.'
-    });
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -28,11 +25,8 @@ export const getAllStores = async (req: Request, res: Response, next: NextFuncti
       data: stores
     });
 
-  } catch (error: any) {
-    next({
-      type: ERROR_TYPES.REQUEST, 
-      message: 'Error fetching stores.'
-    });
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -40,23 +34,13 @@ export const getStoreById = async (req: Request, res: Response, next: NextFuncti
   try {
     const store = await storeService.getStoreById(req.params.id);
 
-    if (!store) {
-      return next({
-        type: ERROR_TYPES.NOT_FOUND,
-        message: 'Store not found.'
-      });
-    }
-
     res.status(200).json({
       status: 'success',
       data: store
     });
 
-  } catch (error: any) {
-    next({
-      type: ERROR_TYPES.REQUEST,
-      message: 'Error fetching store.'
-    });
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -64,48 +48,28 @@ export const updateStore = async (req: Request, res: Response, next: NextFunctio
   try {
     const updatedStore = await storeService.updateStore(req.params.id, req.body);
 
-    if (!updatedStore) {
-      return next({
-        type: ERROR_TYPES.NOT_FOUND,
-        message: 'Store not found.'
-      });
-    }
-
     res.status(200).json({
       status: 'success',
       message: 'Store updated successfully.',
       data: updatedStore
     })
 
-  } catch (error: any) {
-    next({
-      type: ERROR_TYPES.REQUEST,
-      message: 'Error updating store data.'
-    });
+  } catch (error) {
+    next(error);
   }
 }
 
 export const deleteStore = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const deletedStore = await storeService.deleteStore(req.params.id);
-  
-    if (!deletedStore) {
-      return next({
-        type: ERROR_TYPES.NOT_FOUND,
-        message: 'Store not found.'
-      });
-    }
+    await storeService.deleteStore(req.params.id);
 
     res.status(200).json({
       status: 'success',
       message: 'Store deleted successfully.'
     })
     
-  } catch (error: any) {
-    next({
-      type: ERROR_TYPES.REQUEST,
-      message: 'Error deleting store data.'
-    });
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -130,11 +94,7 @@ export const getNearbyStores = async (req: Request, res: Response, next: NextFun
       stores: nearbyStores
     })
 
-  } catch (error: any) {
-    res.status(500).json({
-      status: 'failed',
-      message: 'Error fetching nearby stores.',
-      error: error.message
-    })
+  } catch (error) {
+    next(error);
   }
 }
