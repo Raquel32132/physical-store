@@ -38,28 +38,3 @@ export const validatePostalCode = async (req: Request, res: Response, next: Next
     next(error);
   }
 };
-
-export const validateAddressPayload = async (req: Request, res: Response, next: NextFunction) => {
-  const { address } = req.body;
-
-  if (!address) {
-    const error = {
-      type: ERROR_TYPES.REQUIRED_FIELD,
-      message: 'Address is required.'
-    }
-    return next(error);
-  }
-
-  const allowedFields = ['postalCode', 'number', 'complement'];
-  const invalidFields = Object.keys(address).filter(key => !allowedFields.includes(key));
-
-  if (invalidFields.length > 0) {
-    const error = {
-      type: ERROR_TYPES.INVALID_DATA,
-      message: `Invalid fields in address: ${invalidFields.join(', ')}`
-    }
-    return next(error);
-  }
-
-  next();
-}

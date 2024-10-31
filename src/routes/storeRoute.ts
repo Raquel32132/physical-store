@@ -1,22 +1,31 @@
 import { Router } from 'express';
-import { createStore, deleteStore, getAllStores, getNearbyStores, getStoreById, updateStore } from '../controllers/storeController';
-import { validateAddressPayload, validatePostalCode } from '../middlewares/validateAddress';
+import * as storeController from '../controllers/storeController';
+import * as validateAddress from '../middlewares/validateAddress';
+import * as validateStore from '../middlewares/validateStore';
 
 const router = Router();
 
 router
   .route('/')
-  .get(getAllStores)
-  .post(validateAddressPayload, validatePostalCode, createStore);
+  .get(storeController.getAllStores)
+  .post(
+    validateStore.validateStorePayload, 
+    validateAddress.validatePostalCode, 
+    storeController.createStore
+  );
 
 router
   .route('/:id')
-  .get(getStoreById)
-  .put(validatePostalCode, updateStore)
-  .delete(deleteStore);
+  .get(storeController.getStoreById)
+  .put(
+    validateStore.validateStorePayload, 
+    validateAddress.validatePostalCode, 
+    storeController.updateStore
+  )
+  .delete(storeController.deleteStore);
 
 router
   .route('/nearby/:postalCode')
-  .get(validateAddressPayload, getNearbyStores);
+  .get(storeController.getNearbyStores);
 
 export default router;

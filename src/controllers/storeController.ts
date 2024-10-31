@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import * as storeService from '../services/storeService';
 import { findNearbyStores } from '../services/addressService';
-import { ERROR_TYPES } from '../constants/errors';
 
 export const createStore = async (req: Request, res: Response, next: NextFunction) => {
   try {
